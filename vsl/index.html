@@ -77,8 +77,12 @@ src="https://www.facebook.com/tr?id=1699396607858267&ev=PageView&noscript=1"
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://scripts.converteai.net/53782065-dd54-4ed0-847c-3897f660f267/ab-test/6a3e063319ad0024febe808e/player.js" as="script">
+
+<!-- Otimização do vídeo (vturb) -->
+<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+<link rel="preload" href="https://scripts.converteai.net/53782065-dd54-4ed0-847c-3897f660f267/players/6ad3bee9d3050e416ccee46e/v4/player.js" as="script">
 <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+<link rel="preload" href="https://cdn.converteai.net/53782065-dd54-4ed0-847c-3897f660f267/6a3dbef8ab74e8fd0f26fe99/main.m3u8" as="fetch">
 <link rel="dns-prefetch" href="https://cdn.converteai.net">
 <link rel="dns-prefetch" href="https://scripts.converteai.net">
 <link rel="dns-prefetch" href="https://images.converteai.net">
@@ -360,7 +364,7 @@ body{
   </div>
 
   <div class="vsl-player">
-    <vturb-smartplayer id="ab-6a3e063319ad0024febe808e" style="display: block; margin: 0 auto; width: 100%; "></vturb-smartplayer>
+    <vturb-smartplayer id="vid-6ad3bee9d3050e416ccee46e" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
 
     <div class="ao-vivo" aria-live="off">
       <span class="ao-vivo-ponto" aria-hidden="true"></span>
@@ -390,12 +394,12 @@ body{
 
 <script>
 
-// Player do vturb em teste A/B: o script fica em /ab-test/<id>/player.js
-// (diferente do player comum, que fica em /players/<id>/v4/player.js).
-// Para trocar o vídeo, substitua o <vturb-smartplayer> acima e a URL abaixo pelo novo embed.
+// Player do vturb (player comum: /players/<id>/v4/player.js).
+// Para trocar o vídeo, substitua o <vturb-smartplayer> acima, a URL abaixo
+// e os preloads do <head> pelo novo embed.
 const CONFIG = {
   checkoutUrl: 'https://app.ephra.io/checkout/5do1xf2',
-  vslPlayerUrl: 'https://scripts.converteai.net/53782065-dd54-4ed0-847c-3897f660f267/ab-test/6a3e063319ad0024febe808e/player.js'
+  vslPlayerUrl: 'https://scripts.converteai.net/53782065-dd54-4ed0-847c-3897f660f267/players/6ad3bee9d3050e416ccee46e/v4/player.js'
 };
 
 // Data de hoje no label acima do vídeo (ex.: " (07/10)")
@@ -449,7 +453,7 @@ window.irParaCheckout = irParaCheckout;
  * ============================================================ */
 const CONTADORES = {
   debug: false,                 // true = mostra logs no console para testar
-  duracaoVideo: 1501,           // duração do vídeo: 25:01 (25*60 + 1), igual em todas as variantes do A/B
+  duracaoVideo: 1501,           // duração do vídeo: 25:01 (25*60 + 1)
   pitchInicio: 1177,            // pitch começa em 19:37 (19*60 + 37)
 
   // Cartão de vagas sobre o vídeo (tela preta do fim: 24:01 -> 25:01)
@@ -755,9 +759,8 @@ const CONTADORES = {
   setInterval(posicionarSobreVideo, 500);   // acompanha o título/botão do vturb aparecendo e mudando de tamanho
 
   /* ---------- conexão com o player do vturb ---------- */
-  // No teste A/B o vturb pode criar um player interno com outro id,
-  // então além do elemento principal também procuramos qualquer
-  // <vturb-smartplayer> dentro do container e as instâncias globais.
+  // Além do elemento principal, procura qualquer <vturb-smartplayer>
+  // dentro do container e as instâncias globais.
   let conectado = false;
 
   function acharInstancia(){
